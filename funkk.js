@@ -16,7 +16,6 @@
 // });
 
 
-
 if (document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded", ready)
 } else {
@@ -26,7 +25,7 @@ if (document.readyState == "loading"){
 
 function ready() {
     var input = document.getElementById("send");
-input.addEventListener("click", function() {
+    input.addEventListener("click", function() {
     if (document.getElementById('option').value == 'dinner') {
         createDinner();
 
@@ -57,28 +56,23 @@ function createDinner(){
 
 function createItem(){
 
-    // var i = 0;
-    // while (check.hasChildNodes) {
-
-    // } 
-
     var item = document.getElementById("input").value
     var amount = document.getElementById("count").value
+
     if (amount >= 1) {
         var li = document.createElement("li")
+        li.setAttribute("id", item);
+        li.setAttribute("value", amount);
 
         var buttonPlus = document.createElement("button");
         var plus = document.createTextNode("+");
         buttonPlus.appendChild(plus);
-        // buttonPlus.onclick = addUnit;
-        // buttonPlus.setAttribute("onclick", "addUnit")
         buttonPlus.addEventListener("click", addUnit)
         
 
         var buttonMinus = document.createElement("button");
         var minus = document.createTextNode("-");
         buttonMinus.appendChild(minus);
-        // buttonMinus.onclick = removeUnit;
         buttonMinus.addEventListener("click", removeUnit)
         
 
@@ -87,10 +81,6 @@ function createItem(){
         var remove = document.createTextNode("X"); 
         buttonRemove.appendChild(remove);
         buttonRemove.addEventListener("click", removeUnit)
-        // buttonRemove.onclick = removeUnit;
-        
-
-        
 
         var node = document.createTextNode(item + " " + amount)
         
@@ -107,21 +97,32 @@ function createItem(){
     }
 
 
+//Better solution lol, bug when make a new one that was removed
+
 function addUnit() {
     amount++;
-    console.log(amount);
-    // return amount;
+    document.getElementById(item).innerHTML = item + " " + amount;
+        
+        var ul = document.getElementById("dinner")
+        li.appendChild(buttonMinus)
+        li.appendChild(buttonPlus)
+        li.appendChild(buttonRemove)
 }
 
 function removeUnit() {
     if (amount <=1) { // || this == buttonremove etC?=
-        console.log("suck me")
-        amount = 0;
+        // document.getElementById(item).innerHTML = null;
+        li.remove();
     } else {
         amount--;
+
+        document.getElementById(item).innerHTML = item + " " + amount;
+        
+        var ul = document.getElementById("dinner")
+        li.appendChild(buttonMinus)
+        li.appendChild(buttonPlus)
+        li.appendChild(buttonRemove)
     }
-    console.log(amount);
-    // return amount;
 }
    
 }
