@@ -69,18 +69,28 @@ function createItem(){
 
         var buttonPlus = document.createElement("button");
         var plus = document.createTextNode("+");
-        buttonPlus.onclick = addUnit;
         buttonPlus.appendChild(plus);
+        // buttonPlus.onclick = addUnit;
+        // buttonPlus.setAttribute("onclick", "addUnit")
+        buttonPlus.addEventListener("click", addUnit)
+        
 
         var buttonMinus = document.createElement("button");
         var minus = document.createTextNode("-");
-        buttonMinus.onclick = removeUnit;
         buttonMinus.appendChild(minus);
+        // buttonMinus.onclick = removeUnit;
+        buttonMinus.addEventListener("click", removeUnit)
+        
 
         var buttonRemove = document.createElement("button");
-        var remove = document.createTextNode("remove"); //Later just red button?
-        buttonRemove.onclick = removeUnit;
+        buttonRemove.style.backgroundColor = "red"
+        var remove = document.createTextNode("X"); 
         buttonRemove.appendChild(remove);
+        buttonRemove.addEventListener("click", removeUnit)
+        // buttonRemove.onclick = removeUnit;
+        
+
+        
 
         var node = document.createTextNode(item + " " + amount)
         
@@ -99,21 +109,31 @@ function createItem(){
 
 function addUnit() {
     amount++;
-    // console.log(amount);
-    return amount;
+    console.log(amount);
+    // return amount;
 }
 
 function removeUnit() {
     if (amount <=1) { // || this == buttonremove etC?=
-        
+        console.log("suck me")
+        amount = 0;
     } else {
         amount--;
     }
-    // console.log(amount);
-    return amount;
+    console.log(amount);
+    // return amount;
 }
    
 }
+
+// function addUnit() {
+//     console.log("horse");
+// }
+
+// function removeUnit() {
+//     console.log("fish");
+// }
+
 
 }
 

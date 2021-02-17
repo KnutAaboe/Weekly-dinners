@@ -1,0 +1,5 @@
+Missing functions:
+    Add item on choosen dinner (uniq id stuff)
+    Limit size of dinners (some limit to not jump out of the border)
+    Remove duplicate(or unit++) and remove items, units and more beautiful buttons (+ make them actually work)
+    Make a kind of interaction to either publish a .txt with dinner or send to mail or ...
