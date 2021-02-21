@@ -14,7 +14,7 @@
 // $("#formname_form").submit(function(e) {
 //     e.preventDefault();
 // });
-
+var clicked;
 
 if (document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded", ready)
@@ -42,17 +42,132 @@ function ready() {
 })
 
 
+// function createDinner(){
+//     var dinner = document.getElementById("input").value
+//     var node = document.createElement("ul")
+//     var list = document.querySelectorAll("ul")
+    
+
+//     node.classList.add("t2");
+//     node.setAttribute("id", dinner); 
+//     var content = document.createTextNode(dinner)
+//     node.appendChild(content)
+//     var element = document.getElementById("tt1")
+
+
+//     element.appendChild(node)
+//     node.addEventListener("click", function() {
+//         clicked = dinner;
+//     })
+// }
+
+
+
+
 function createDinner(){
+
     var dinner = document.getElementById("input").value
     var node = document.createElement("ul")
-    node.classList.add("t2");
-    node.setAttribute("id", "dinner");
+    var list = document.querySelectorAll("ul")
+
+    if (list.length >= 2) {
+
+        for (var i = 1; i < list.length; i++) {
+        if ((list[i].id.toUpperCase() == dinner.toUpperCase()) || dinner == "") { //A better solution 
+            dinner = "";
+            break;
+    
+    }
+    // console.log(list[i].id.toUpperCase + dinner.toUpperCase)
+}
+
+    } 
+
+    if (!(dinner == "")) {
+        node.classList.add("t2");
+    node.setAttribute("id", dinner); 
     var content = document.createTextNode(dinner)
     node.appendChild(content)
     var element = document.getElementById("tt1")
     element.appendChild(node)
+    node.addEventListener("click", function() {
+        clicked = dinner;
+    })
+    }
+    
+    // else {
+    //      node.classList.add("t2");
+    //         node.setAttribute("id", dinner); 
+    //         var content = document.createTextNode(dinner)
+    //         node.appendChild(content)
+    //         var element = document.getElementById("tt1")
+    //         element.appendChild(node)
+    //         node.addEventListener("click", function() {
+    //         clicked = dinner;
+    //         })
+    // }
 
+    
 }
+
+
+
+//     } 
+// } else {
+//     element.appendChild(node)
+//     node.addEventListener("click", function() {
+//     clicked = dinner;
+// })
+// }
+
+//     if (list.length >= 2) {
+
+//         for (var i = 1; i < list.length; i++) {
+//         // if (!(list[i].id.toUpperCase == dinner.toUpperCase)) {
+//     node.classList.add("t2");
+//     node.setAttribute("id", dinner); 
+//     var content = document.createTextNode(dinner)
+//     node.appendChild(content)
+//     var element = document.getElementById("tt1")
+//     element.appendChild(node)
+//     node.addEventListener("click", function() {
+//         clicked = dinner;
+//     })
+            
+//         // } 
+//     }
+
+//     } else if (list.length >= 1){
+//         node.classList.add("t2");
+//     node.setAttribute("id", dinner); 
+//     var content = document.createTextNode(dinner)
+//     node.appendChild(content)
+//     var element = document.getElementById("tt1")
+//     element.appendChild(node)
+//     node.addEventListener("click", function() {
+//         clicked = dinner;
+//     })
+// } 
+
+
+
+
+    // else {
+    //     var node = document.createElement("ul")
+    // node.classList.add("t2");
+    // node.setAttribute("id", dinner); 
+    // var content = document.createTextNode(dinner)
+    // node.appendChild(content)
+    // var element = document.getElementById("tt1")
+    // element.appendChild(node)
+    // node.addEventListener("click", function() {
+    //     clicked = dinner;
+    // })
+    // }
+
+    
+
+// }
 
 function createItem(){
 
@@ -82,13 +197,20 @@ function createItem(){
         buttonRemove.appendChild(remove);
         buttonRemove.addEventListener("click", removeUnit)
 
-        var node = document.createTextNode(item + " " + amount)
-        
-        var ul = document.getElementById("dinner")
-        li.appendChild(node)
-        li.appendChild(buttonMinus)
-        li.appendChild(buttonPlus)
-        li.appendChild(buttonRemove)
+        var content = document.createTextNode(item + " " + amount)
+
+        var list = document.querySelectorAll("ul")
+
+        for (var i = 1; i < list.length; i++) {
+            if (list[i].id == clicked) {
+                var ul = document.getElementById(clicked)
+            } else if (clicked == null){
+                alert("Click the dinner you want to add items to")
+            }
+        }
+
+        li.appendChild(content)
+        updateItems(li, buttonMinus, buttonPlus, buttonRemove)
         ul.appendChild(li)
 
 
@@ -101,40 +223,44 @@ function createItem(){
 
 function addUnit() {
     amount++;
-    document.getElementById(item).innerHTML = item + " " + amount;
-        
-        var ul = document.getElementById("dinner")
-        li.appendChild(buttonMinus)
-        li.appendChild(buttonPlus)
-        li.appendChild(buttonRemove)
+    // document.getElementById(item).innerHTML = item + " " + amount;
+    document.getElementById(item).innerHTML = item + " " + amount
+    var ul = document.getElementById(clicked)
+    updateItems(li, buttonMinus, buttonPlus, buttonRemove)
 }
 
 function removeUnit() {
-    if (amount <=1) { // || this == buttonremove etC?=
+    // console.log(this)
+    // console.log(this.textContent)
+    if (amount <=1 || this.textContent == "X") { // || this == buttonremove etC?=
         // document.getElementById(item).innerHTML = null;
         li.remove();
     } else {
         amount--;
 
-        document.getElementById(item).innerHTML = item + " " + amount;
+        // document.getElementById(item).innerHTML = item + " " + amount;
         
-        var ul = document.getElementById("dinner")
-        li.appendChild(buttonMinus)
-        li.appendChild(buttonPlus)
-        li.appendChild(buttonRemove)
+        document.getElementById(item).innerHTML = item + " " + amount
+        // var ul = document.getElementById(clicked)
+        updateItems(li, buttonMinus, buttonPlus, buttonRemove)
     }
 }
-   
-}
 
-// function addUnit() {
-//     console.log("horse");
-// }
-
-// function removeUnit() {
-//     console.log("fish");
-// }
 
 
 }
+
+
+
+
+
+}
+
+function updateItems(li, buttonMinus, buttonPlus, buttonRemove){
+    // li.appendChild(content)
+    li.appendChild(buttonMinus)
+    li.appendChild(buttonPlus)
+    li.appendChild(buttonRemove)
+}
+
 
