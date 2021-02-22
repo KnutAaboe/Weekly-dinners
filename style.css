@@ -102,3 +102,10 @@ header li {
   padding: 0.1em 0;
   font-size: 20px;
 }
+
+#errorMessage {
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+  color: rgba(255, 0, 0, 0.603);
+}

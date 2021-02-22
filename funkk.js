@@ -14,7 +14,10 @@
 // $("#formname_form").submit(function(e) {
 //     e.preventDefault();
 // });
+
+
 var clicked;
+var clickedNode;
 
 if (document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded", ready)
@@ -35,34 +38,11 @@ function ready() {
             createItem();
 
         } else {
-            alert("You have to create a dinner element before putting in items")
+            document.getElementById("errorMessage").innerHTML = "You have to create a dinner element before putting in items"
         }
         
     }
 })
-
-
-// function createDinner(){
-//     var dinner = document.getElementById("input").value
-//     var node = document.createElement("ul")
-//     var list = document.querySelectorAll("ul")
-    
-
-//     node.classList.add("t2");
-//     node.setAttribute("id", dinner); 
-//     var content = document.createTextNode(dinner)
-//     node.appendChild(content)
-//     var element = document.getElementById("tt1")
-
-
-//     element.appendChild(node)
-//     node.addEventListener("click", function() {
-//         clicked = dinner;
-//     })
-// }
-
-
-
 
 function createDinner(){
 
@@ -73,194 +53,205 @@ function createDinner(){
     if (list.length >= 2) {
 
         for (var i = 1; i < list.length; i++) {
-        if ((list[i].id.toUpperCase() == dinner.toUpperCase()) || dinner == "") { //A better solution 
-            dinner = "";
-            break;
+        if ((list[i].id.toLowerCase() == dinner.toLowerCase()) || dinner == "") { //A better solution 
+
+            var result = confirm("You already have this dinner, click OK to add again")
+
+            if (result) {
+                break;
+            } else {
+                dinner = "";
+                break;
+            }
+            
+            
     
     }
-    // console.log(list[i].id.toUpperCase + dinner.toUpperCase)
 }
 
     } 
 
     if (!(dinner == "")) {
-        node.classList.add("t2");
+    node.classList.add("t2");
     node.setAttribute("id", dinner); 
     var content = document.createTextNode(dinner)
     node.appendChild(content)
     var element = document.getElementById("tt1")
     element.appendChild(node)
+
     node.addEventListener("click", function() {
+
         clicked = dinner;
+        clickedNode = node;
+
+        myfunc(node)
+
     })
+
+    var longPress = 1000;
+    var start;
+
+    //some kind of pop up when you have hold for enough time
+    node.addEventListener("mousedown", function(e) {
+        start = new Date().getTime();
+    });
+
+    node.addEventListener("mouseleave", function(e) {
+        start = 0;
+    });
+
+    node.addEventListener("mouseup", function (e) {
+        if (new Date().getTime() >= (start + longPress)) {
+            var result = confirm("Click ok to delete dinner")
+            if(result){
+            node.remove();
+            } 
+        }
+
+    })
+
+
+
+    
     }
     
-    // else {
-    //      node.classList.add("t2");
-    //         node.setAttribute("id", dinner); 
-    //         var content = document.createTextNode(dinner)
-    //         node.appendChild(content)
-    //         var element = document.getElementById("tt1")
-    //         element.appendChild(node)
-    //         node.addEventListener("click", function() {
-    //         clicked = dinner;
-    //         })
-    // }
-
-    
 }
-
-
-
-//     } 
-// } else {
-//     element.appendChild(node)
-//     node.addEventListener("click", function() {
-//     clicked = dinner;
-// })
-// }
-
-//     if (list.length >= 2) {
-
-//         for (var i = 1; i < list.length; i++) {
-//         // if (!(list[i].id.toUpperCase == dinner.toUpperCase)) {
-//     node.classList.add("t2");
-//     node.setAttribute("id", dinner); 
-//     var content = document.createTextNode(dinner)
-//     node.appendChild(content)
-//     var element = document.getElementById("tt1")
-//     element.appendChild(node)
-//     node.addEventListener("click", function() {
-//         clicked = dinner;
-//     })
-            
-//         // } 
-//     }
-
-//     } else if (list.length >= 1){
-//         node.classList.add("t2");
-//     node.setAttribute("id", dinner); 
-//     var content = document.createTextNode(dinner)
-//     node.appendChild(content)
-//     var element = document.getElementById("tt1")
-//     element.appendChild(node)
-//     node.addEventListener("click", function() {
-//         clicked = dinner;
-//     })
-// } 
-
-
-
-
-    // else {
-    //     var node = document.createElement("ul")
-    // node.classList.add("t2");
-    // node.setAttribute("id", dinner); 
-    // var content = document.createTextNode(dinner)
-    // node.appendChild(content)
-    // var element = document.getElementById("tt1")
-    // element.appendChild(node)
-    // node.addEventListener("click", function() {
-    //     clicked = dinner;
-    // })
-    // }
-
-    
-
-// }
 
 function createItem(){
 
     var item = document.getElementById("input").value
     var amount = document.getElementById("count").value
 
+    // console.log(clicked.node)
+    // var items = clicked.querySelectorAll("li");
+    // console.log(items[0])
+    // console.log(clicked + "    " + clickedNode)
+
+
     if (amount >= 1) {
-        var li = document.createElement("li")
-        li.setAttribute("id", item);
-        li.setAttribute("value", amount);
 
-        var buttonPlus = document.createElement("button");
-        var plus = document.createTextNode("+");
-        buttonPlus.appendChild(plus);
-        buttonPlus.addEventListener("click", addUnit)
-        
+        // var lilist = document.querySelectorAll("li")
+        // var ullist = document.querySelectorAll("ul")
+                // for (var i = 1; i < list.length; i++) {
+                //     if (list[i].id == clicked) {
+                //         var ul = document.getElementById(clicked)
+                //     } else if (clicked == null){
+                //         alert("Click the dinner you want to add items to")
+                //     }
+                // }
 
-        var buttonMinus = document.createElement("button");
-        var minus = document.createTextNode("-");
-        buttonMinus.appendChild(minus);
-        buttonMinus.addEventListener("click", removeUnit)
-        
+        if (clickedNode.hasChildNodes() == true) { //Check childnoes in clicked ul
+             var items = clickedNode.querySelectorAll("li");
 
-        var buttonRemove = document.createElement("button");
-        buttonRemove.style.backgroundColor = "red"
-        var remove = document.createTextNode("X"); 
-        buttonRemove.appendChild(remove);
-        buttonRemove.addEventListener("click", removeUnit)
+             for (var i = 0;  i < items.length; i++) {
+                 var duplicate = false;
 
-        var content = document.createTextNode(item + " " + amount)
+                if (item == items[i].id) { //if item is in this ul, there is a dup now
+                    duplicate = true;
+                    break;
+                }
+             }
 
-        var list = document.querySelectorAll("ul")
+             if (!(duplicate)) { //if there is no dup, then go ahead and insert item to list
 
-        for (var i = 1; i < list.length; i++) {
-            if (list[i].id == clicked) {
-                var ul = document.getElementById(clicked)
-            } else if (clicked == null){
-                alert("Click the dinner you want to add items to")
-            }
+                makeItem(item, amount);
+
+               
+                 
+             } else { //Basicly remove dup and tell user not to do this again
+                 document.getElementById("errorMessage").innerHTML = "That item already exist"
+             }
+
+        } else {
+            makeItem(item, amount);
         }
 
-        li.appendChild(content)
-        updateItems(li, buttonMinus, buttonPlus, buttonRemove)
-        ul.appendChild(li)
-
-
     } else {
-        alert("You can't add a negative number of items")
+        document.getElementById("errorMessage").innerHTML = "You can't add a negative number of items"
     }
 
 
-//Better solution lol, bug when make a new one that was removed
 
-function addUnit() {
+}
+
+
+
+
+
+
+function makeItem(item, amount){
+    var li = document.createElement("li")
+    li.setAttribute("id", item);
+    li.setAttribute("value", amount);
+
+
+    var buttonPlus = document.createElement("button");
+    var plus = document.createTextNode("+");
+    buttonPlus.appendChild(plus);
+    buttonPlus.addEventListener("click", addUnit)
+    
+    
+    var buttonMinus = document.createElement("button");
+    var minus = document.createTextNode("-");
+    buttonMinus.appendChild(minus);
+    buttonMinus.addEventListener("click", removeUnit)
+    
+    
+    var buttonRemove = document.createElement("button");
+    buttonRemove.style.backgroundColor = "red"
+    var remove = document.createTextNode("X"); 
+    buttonRemove.appendChild(remove);
+    buttonRemove.addEventListener("click", removeUnit)
+
+    var content = document.createTextNode(item + " " + amount)
+
+    var list = document.querySelectorAll("ul")
+
+    for (var i = 1; i < list.length; i++) {
+        if (list[i].id == clicked) {
+            var ul = document.getElementById(clicked)
+        } else if (clicked == null){
+            alert("Click the dinner you want to add items to")
+        }
+    }
+
+    li.appendChild(content)
+    updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+    clickedNode.appendChild(li)
+    // ul.appendChild(li)
+
+
+    function addUnit() {
     amount++;
-    // document.getElementById(item).innerHTML = item + " " + amount;
     document.getElementById(item).innerHTML = item + " " + amount
     var ul = document.getElementById(clicked)
     updateItems(li, buttonMinus, buttonPlus, buttonRemove)
 }
 
 function removeUnit() {
-    // console.log(this)
-    // console.log(this.textContent)
-    if (amount <=1 || this.textContent == "X") { // || this == buttonremove etC?=
-        // document.getElementById(item).innerHTML = null;
+    if (amount <=1 || this.textContent == "X") { 
         li.remove();
     } else {
         amount--;
-
-        // document.getElementById(item).innerHTML = item + " " + amount;
         
         document.getElementById(item).innerHTML = item + " " + amount
-        // var ul = document.getElementById(clicked)
         updateItems(li, buttonMinus, buttonPlus, buttonRemove)
     }
 }
 
-
-
 }
-
-
-
-
 
 }
 
 function updateItems(li, buttonMinus, buttonPlus, buttonRemove){
-    // li.appendChild(content)
     li.appendChild(buttonMinus)
     li.appendChild(buttonPlus)
     li.appendChild(buttonRemove)
 }
 
+function myfunc(node){
+    document.querySelectorAll("ul").forEach(item => item.style.backgroundColor = "transparent");
+    node.style.backgroundColor = "pink"
 
+    
+}
