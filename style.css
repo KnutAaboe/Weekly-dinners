@@ -94,10 +94,13 @@ header li {
   width: 20%;
   /* height: 100%; */
   min-height: 20px;
+  box-sizing: border-box;
+  margin-bottom: 5px;
 }
 
 .t2 li {
-  /* border: 2px solid black; */
+  /* noe first stuff? li[0] border*/
+  /* border-top: 0.5px solid rgba(0, 0, 0, 0.3); */
   margin: 0;
   padding: 0.1em 0;
   font-size: 20px;
@@ -108,4 +111,60 @@ header li {
   margin: 0;
   padding: 0;
   color: rgba(255, 0, 0, 0.603);
+}
+
+.buttonStuff {
+  background-color: transparent;
+  background-color: whitesmoke;
+  cursor: pointer;
+  color: black;
+  border: 2px solid #070101d3;
+  border-radius: 4px;
+}
+
+.butto {
+  width: 30px;
+  height: 25px;
+  border-radius: 12px;
+}
+
+.selec {
+  width: 40px;
+  height: 25px;
+}
+
+.sear {
+  width: 150px;
+  height: 35px;
+}
+
+#x {
+  width: 25px;
+  height: 20px;
+  margin-bottom: -5px;
+  /* margin: 0; */
+}
+
+@media (max-width: 978px) {
+  .t2 {
+    margin: 1% 1.5%;
+    text-align: center;
+    list-style-type: none;
+    padding: 1px 5px;
+    font-size: 15px;
+    border: 2px solid black;
+    width: 40%;
+    /* height: 100%; */
+    min-height: 20px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+  }
+
+  .t2 li {
+    font-size: 10px;
+  }
+
+  .glass {
+    width: 90%;
+  }
 }

@@ -1,7 +1,8 @@
 Missing functions:
     Limit size of dinners (some limit to not jump out of the border)
     Make a kind of interaction to either publish a .txt with dinner or send to mail or ...
+    fiks error / ting folk man fucke med / security 
+    fixs splitting when more than 6 dinners, then you also have to make a max limit of items. Above items can make beneeth items move
 
     Extra features:
-    Color on only, at that time, clicked element.
     Extra unit functionalities, gram etc

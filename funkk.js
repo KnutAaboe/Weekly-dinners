@@ -16,8 +16,11 @@
 // });
 
 
-var clicked;
 var clickedNode;
+// document.getElementById("errorMessage").innerHTML = 'No dinner just items? No problem, just make a dinner named "other" or split into categories '
+//<br>
+//There can't be any words longer than 16 characters, try to break it up
+//a good info start about what you can and cant do??
 
 if (document.readyState == "loading"){
     document.addEventListener("DOMContentLoaded", ready)
@@ -45,15 +48,20 @@ function ready() {
 })
 
 function createDinner(){
-
+    document.getElementById("errorMessage").innerHTML = ""
     var dinner = document.getElementById("input").value
     var node = document.createElement("ul")
-    var list = document.querySelectorAll("ul")
+    var dive = document.getElementById("tt1")
+    var list = dive.querySelectorAll("ul")
 
-    if (list.length >= 2) {
+    if (dinner.length <= 16) {
 
-        for (var i = 1; i < list.length; i++) {
-        if ((list[i].id.toLowerCase() == dinner.toLowerCase()) || dinner == "") { //A better solution 
+        
+
+    if (list.length >= 1) {
+
+        for (var i = 0; i < list.length; i++) {
+        if ((list[i].id.toLowerCase() == dinner.toLowerCase()) || dinner == "") {
 
             var result = confirm("You already have this dinner, click OK to add again")
 
@@ -63,8 +71,6 @@ function createDinner(){
                 dinner = "";
                 break;
             }
-            
-            
     
     }
 }
@@ -81,9 +87,7 @@ function createDinner(){
 
     node.addEventListener("click", function() {
 
-        clicked = dinner;
         clickedNode = node;
-
         myfunc(node)
 
     })
@@ -114,6 +118,10 @@ function createDinner(){
 
     
     }
+} else {
+    document.getElementById("errorMessage").innerHTML = "There can't be any words longer than 16 characters, try to break it up"
+
+}
     
 }
 
@@ -122,25 +130,11 @@ function createItem(){
     var item = document.getElementById("input").value
     var amount = document.getElementById("count").value
 
-    // console.log(clicked.node)
-    // var items = clicked.querySelectorAll("li");
-    // console.log(items[0])
-    // console.log(clicked + "    " + clickedNode)
-
-
     if (amount >= 1) {
 
-        // var lilist = document.querySelectorAll("li")
-        // var ullist = document.querySelectorAll("ul")
-                // for (var i = 1; i < list.length; i++) {
-                //     if (list[i].id == clicked) {
-                //         var ul = document.getElementById(clicked)
-                //     } else if (clicked == null){
-                //         alert("Click the dinner you want to add items to")
-                //     }
-                // }
+        if (clickedNode != undefined) { 
 
-        if (clickedNode.hasChildNodes() == true) { //Check childnoes in clicked ul
+            if (clickedNode.hasChildNodes() == true) {
              var items = clickedNode.querySelectorAll("li");
 
              for (var i = 0;  i < items.length; i++) {
@@ -161,9 +155,10 @@ function createItem(){
              } else { //Basicly remove dup and tell user not to do this again
                  document.getElementById("errorMessage").innerHTML = "That item already exist"
              }
-
+        }
         } else {
-            makeItem(item, amount);
+                document.getElementById("errorMessage").innerHTML = "Click on dinner";
+            
         }
 
     } else {
@@ -180,66 +175,96 @@ function createItem(){
 
 
 function makeItem(item, amount){
+    document.getElementById("errorMessage").innerHTML = "";
     var li = document.createElement("li")
     li.setAttribute("id", item);
     li.setAttribute("value", amount);
 
 
     var buttonPlus = document.createElement("button");
+    buttonPlus.style.backgroundColor = "white"
     var plus = document.createTextNode("+");
     buttonPlus.appendChild(plus);
     buttonPlus.addEventListener("click", addUnit)
     
     
     var buttonMinus = document.createElement("button");
+    buttonMinus.style.backgroundColor = "white"
     var minus = document.createTextNode("-");
     buttonMinus.appendChild(minus);
     buttonMinus.addEventListener("click", removeUnit)
     
-    
-    var buttonRemove = document.createElement("button");
-    buttonRemove.style.backgroundColor = "red"
-    var remove = document.createTextNode("X"); 
-    buttonRemove.appendChild(remove);
+    var buttonRemove = document.createElement("img");
+    buttonRemove.setAttribute("src", "Images/trashcan.jpg")
+    buttonRemove.setAttribute("id", "x");
     buttonRemove.addEventListener("click", removeUnit)
 
     var content = document.createTextNode(item + " " + amount)
 
     var list = document.querySelectorAll("ul")
 
-    for (var i = 1; i < list.length; i++) {
-        if (list[i].id == clicked) {
-            var ul = document.getElementById(clicked)
-        } else if (clicked == null){
-            alert("Click the dinner you want to add items to")
-        }
-    }
+    var content = document.createTextNode(item + " " + amount + " ")
+    li.appendChild(content)
+    updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+    clickedNode.appendChild(li)
 
     li.appendChild(content)
     updateItems(li, buttonMinus, buttonPlus, buttonRemove)
     clickedNode.appendChild(li)
-    // ul.appendChild(li)
 
 
     function addUnit() {
-    amount++;
-    document.getElementById(item).innerHTML = item + " " + amount
-    var ul = document.getElementById(clicked)
-    updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+            var list = clickedNode.querySelectorAll("li");
+
+        if (clickedNode.id === li.parentNode.id) {
+    for (var i = 0; i < (list.length); i++){
+
+            if (item == list[i].id){
+
+
+
+                amount++;
+                list[i].innerHTML = item + " " + amount + " ";
+                updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+                break;
+            } 
+
+        }
+            
+
+
+        }
+
+        
 }
 
 function removeUnit() {
-    if (amount <=1 || this.textContent == "X") { 
+    
+    if (clickedNode.id === li.parentNode.id) {
+
+        if (amount <=1 || this.id == "x") { 
         li.remove();
     } else {
-        amount--;
-        
-        document.getElementById(item).innerHTML = item + " " + amount
-        updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+        var list = clickedNode.querySelectorAll("li");
+        for (var i = 0; i < (list.length); i++){
+
+            if (item === list[i].id){
+                amount--;
+                list[i].innerHTML = item + " " + amount + " ";
+                updateItems(li, buttonMinus, buttonPlus, buttonRemove)
+                break;
+            } 
+
+        }
     }
+
+    }
+
 }
 
 }
+
+
 
 }
 
@@ -251,7 +276,7 @@ function updateItems(li, buttonMinus, buttonPlus, buttonRemove){
 
 function myfunc(node){
     document.querySelectorAll("ul").forEach(item => item.style.backgroundColor = "transparent");
-    node.style.backgroundColor = "pink"
+    node.style.backgroundColor = "whitesmoke"
 
     
 }
